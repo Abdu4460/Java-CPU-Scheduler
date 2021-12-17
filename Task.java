@@ -22,17 +22,18 @@ public class Task
     private int tid;
     private int priority;
     private int burst;
+    private int ArrivalTime;
 
     /**
      * We use an atomic integer to assign each task a unique task id.
      */
     private static AtomicInteger tidAllocator = new AtomicInteger();
 
-    public Task(String name, int priority, int burst) {
+    public Task(String name, int priority, int burst, int ArrivalTime) {
         this.name = name;
         this.priority = priority;
         this.burst = burst;
-
+        this.ArrivalTime = ArrivalTime;
         this.tid = tidAllocator.getAndIncrement();
     }
 
@@ -54,6 +55,10 @@ public class Task
     public int getBurst() {
         return burst;
     }
+    
+    public int getArrivalTime() {
+        return ArrivalTime;
+    }
 
     /**
      * Appropriate setters
@@ -68,6 +73,12 @@ public class Task
         this.burst = burst;
 
         return burst;
+    }
+
+    public int setArrivalTime(int ArrivalTime) {
+        this.ArrivalTime = ArrivalTime;
+        
+        return ArrivalTime;
     }
 
     /**
@@ -94,6 +105,7 @@ public class Task
             "Name: " + name + "\n" + 
             "Tid: " + tid + "\n" + 
             "Priority: " + priority + "\n" + 
-            "Burst: " + burst + "\n";
+            "Burst: " + burst + "\n" +
+            "Arrival time: " + ArrivalTime + "\n";
     }
 }
