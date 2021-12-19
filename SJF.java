@@ -4,18 +4,13 @@
 //Response time = start time - arrival time <--------|for the executions
 //pull
 public class SJF extends CPU implements Algorithm {
-	
-    
-    public static void addToTaskList(Task t) { //Will be called when we want to add a task to the list
-    	readyQueue.add(t);
-    }
     
     public Task pickNextTask() { //Will be called to pick the next task for execution based on the rules of SJF
-    	Task shortest_job = readyQueue.peek();
-    	
-    	for(Task n: readyQueue) {
-    		if(n.getBurst() < shortest_job.getBurst()) {
-    			shortest_job = n;
+    	Task shortest_job = taskList.get(0);
+    	for(Task each : taskList) {
+    		if(each.getBurst() < shortest_job.getBurst()) {
+    			if (each.getArrivalTime() >= CPUTime)
+					shortest_job = each;
     		}
     	}
     	
@@ -51,6 +46,5 @@ public class SJF extends CPU implements Algorithm {
 		System.out.println("The average waiting time is: " + avgWaitingTime());
 		System.out.println("The average response time is: " + avgResponseTime());
     }
-    
-   
+
 }

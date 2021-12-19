@@ -1,9 +1,5 @@
 
 public class PriorityScheduling extends CPU implements Algorithm {
-
-    public static void addToReadyQueue(Task t) {
-		readyQueue.add(t);
-	}
 	
 	public void schedule() {
 		int time_elapsed = 0; 
@@ -38,10 +34,11 @@ public class PriorityScheduling extends CPU implements Algorithm {
 
 	@Override
 	public Task pickNextTask() { // Selects the next task to be scheduled to the CPU
-		Task highest_priority = readyQueue.peek();
-		for(Task each: readyQueue) {
+		Task highest_priority = taskList.get(0);
+		for(Task each: taskList) {
 			if(each.getPriority() > highest_priority.getPriority()) {
-				highest_priority = each;
+				if(each.getArrivalTime() >= CPUTime) 
+					highest_priority = each;
 			}
 		}
 		return highest_priority;

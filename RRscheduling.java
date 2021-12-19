@@ -1,12 +1,5 @@
 
 public class RRscheduling extends CPU implements Algorithm {
-
-
-
-    public static void addToReadyQueue(Task t) { //Just to add to "processingNow"
-	readyQueue.add(t);
-	}
-    
     
 	public void schedule() {//the main scheduling algorithm, the initializations at the start here are for setting
 		int time_elapsed = 0; //up necessary variables and stuff. 
@@ -67,8 +60,13 @@ public class RRscheduling extends CPU implements Algorithm {
 	}
 
 	public Task pickNextTask() {
-		Task ret = readyQueue.remove();//using queue functionality, it removes the head of the queue, we shove it back in during execution
-		return ret;
+		Task FC = taskList.get(0);
+		for (Task each : taskList) {
+			if(each.getArrivalTime() < FC.getArrivalTime()) {
+				FC = each;
+			}
+		}
+		return FC;
 	}
-	
+
 }
