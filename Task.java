@@ -14,8 +14,9 @@
  */
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
-public class Task
+public class Task implements Comparator<Task>, Comparable<Task> 
 {
     // the representation of each task
     private String name;
@@ -28,6 +29,20 @@ public class Task
      * We use an atomic integer to assign each task a unique task id.
      */
     private static AtomicInteger tidAllocator = new AtomicInteger();
+
+    @Override
+    public int compare(Task t1, Task t2) {
+        return t1.getArrivalTime() - t2.getArrivalTime();
+    }
+
+    @Override
+    public int compareTo(Task t) {
+        return (this.name).compareTo(t.name);
+    }
+
+    public Task() {
+
+    }
 
     public Task(String name, int priority, int burst, int ArrivalTime) {
         this.name = name;
