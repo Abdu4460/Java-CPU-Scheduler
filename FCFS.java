@@ -1,3 +1,4 @@
+import java.util.Collections;
 
 public class FCFS extends CPU implements Algorithm {
 	
@@ -5,7 +6,8 @@ public class FCFS extends CPU implements Algorithm {
     	int burst_time = 0;
     	String task_name;
     	
-		storeBurst();
+		storeBurst(taskList);
+		Collections.sort(taskList, new Task());
 
     	System.out.println("<=====================================================>");
     	System.out.println(" | Process |  Priority | CPU Burst |  Time Elapsed |");
@@ -14,23 +16,18 @@ public class FCFS extends CPU implements Algorithm {
     		task_name = t.getName();
     		burst_time = t.getBurst();
     		storeStart(task_name, CPUTime);
+			checkTime(t);
     		CPUTime = CPUTime + burst_time;
     		CPU.run(t, CPUTime);
     		storeCompletion(task_name, CPUTime);
+			taskList.remove(t);
 		}
-		System.out.println("The average turnaround time is: " + avgTurnAroundTime());
-		System.out.println("The average waiting time is: " + avgWaitingTime());
-		System.out.println("The average response time is: " + avgResponseTime());
+		printStats();
 	}
 	
 
 	public Task pickNextTask() {
 		Task FC = taskList.get(0);
-		for (Task each : taskList) {
-			if(each.getArrivalTime() < FC.getArrivalTime()) {
-				FC = each;
-			}
-		}
 		return FC;
 	}
 		

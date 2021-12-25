@@ -1,3 +1,4 @@
+import java.util.Collections;
 
 //Turnaround time = completion time - arrival time <-|We want the averages
 //Waiting time = turnaround time - burst time <------|of these three times
@@ -5,46 +6,37 @@
 //pull
 public class SJF extends CPU implements Algorithm {
     
-    public Task pickNextTask() { //Will be called to pick the next task for execution based on the rules of SJF
-    	Task shortest_job = taskList.get(0);
-    	for(Task each : taskList) {
-    		if(each.getBurst() < shortest_job.getBurst()) {
-    			if (each.getArrivalTime() >= CPUTime)
-					shortest_job = each;
-    		}
-    	}
-    	
-    	return shortest_job;
-    }
-    
     public void schedule() { //"Runs" the task on the CPU and adds its finish information to the "completed" arraylist for calculating performance metrics
-    	int time_elapsed = 0; 
     	int burst_time = 0;
     	String task_name;
     	
-    	for(Task each: readyQueue) {//for-each loop used to go through the task list and copy the initial burst... 
-			String burst_task_name = each.getName();//...info into the "burst" ArrayList before we alter the burst times during...
-			int initial_burst = each.getBurst();//...RR scheduling, we'll use this for waiting time later
-			Object[] burst_info = {burst_task_name, initial_burst};
-			burst.add(burst_info);
-		}
+    	storeBurst(taskList);
+		Collections.sort(taskList, new Task());
     	
     	System.out.println("<=====================================================>");
     	System.out.println(" | Process |  Priority | CPU Burst |  Time Elapsed |");
-    	while(!readyQueue.isEmpty()) {
+    	while(!taskList.isEmpty()) {
     		Task t = pickNextTask();
     		task_name = t.getName();
     		burst_time = t.getBurst();
-    		storeStart(task_name, time_elapsed);
-    		time_elapsed = time_elapsed + burst_time;
-    		CPU.run(t, time_elapsed);
-    		Object[] finished_task = {task_name, time_elapsed};
+    		storeStart(task_name, CPUTime);
+			checkTime(t);
+    		CPUTime = CPUTime + burst_time;
+    		CPU.run(t, CPUTime);
+    		Object[] finished_task = {task_name, CPUTime};
     		completed.add(finished_task);
-    		readyQueue.remove(t);
+    		taskList.remove(t);
     	}
-    	System.out.println("The average turnaround time is: " + avgTurnAroundTime());
-		System.out.println("The average waiting time is: " + avgWaitingTime());
-		System.out.println("The average response time is: " + avgResponseTime());
+    	printStats();
     }
-
+    
+    public Task pickNextTask() { //Will be called to pick the next task for execution based on the rules of SJF
+    	Task shortest_job = taskList.get(0);
+    	for(Task each : taskList) {
+    		if(each.getBurst() < shortest_job.getBurst() && each.getArrivalTime() >= CPUTime) {
+					shortest_job = each;
+    		}
+    	}
+    	return shortest_job;
+    }
 }

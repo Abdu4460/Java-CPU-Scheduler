@@ -9,13 +9,11 @@ import java.util.*;
  //pull
  public class CPU
  {
-    public static int numberOfTasks; //Number of tasks to process, will be decremented whenever a job is done
 	public final static int RRQuantum = 10; //The length of the time quantum, set according to the brief
 	public static int reps = 0; //To fill up the ArrayList "start" without repeated values
     public static int CPUTime = 0;
 
     public static ArrayList<Task> taskList = new ArrayList<>(); //this is to keep all the tasks we have
-    public static ArrayList<Task> sortedTaskList = new ArrayList<>();
 	public static ArrayList<Object[]> completed = new ArrayList<>();//Stores object arrays as follows {Task name, finish time}
 	public static ArrayList<Object[]> burst = new ArrayList<>();//Stores object arrays as follows {Task name, burst time}
 	public static ArrayList<Object[]> start = new ArrayList<>(); //Stores object arrays as follows {Task name, start time}
@@ -121,7 +119,7 @@ import java.util.*;
     	start.add(newStart);
     }
 
-    public void storeBurst() {
+    public void storeBurst(ArrayList<Task> taskList) {
 		for(Task each : taskList) {//for-each loop used to go through the task list and copy the initial burst... 
 			String burst_task_name = each.getName();//...info into the "burst" ArrayList
 			int initial_burst = each.getBurst();
@@ -135,4 +133,15 @@ import java.util.*;
     	completed.add(finished_task);
     }
 
+    public void checkTime(Task t) {
+        while(t.getArrivalTime() > CPUTime) {
+            CPUTime++;
+        }
+    }
+
+    public static void printStats() {
+		System.out.println("The average turnaround time is: " + avgTurnAroundTime());
+		System.out.println("The average waiting time is: " + avgWaitingTime());
+		System.out.println("The average response time is: " + avgResponseTime());
+    }
  }
