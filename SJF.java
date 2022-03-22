@@ -13,8 +13,7 @@ public class SJF extends CPU implements Algorithm {
     	storeBurst(taskList);
 		Collections.sort(taskList, new Task());
     	
-    	System.out.println("<=====================================================>");
-    	System.out.println(" | Process |  Priority | CPU Burst |  Time Elapsed |");
+    	printTableHeader();
     	while(!taskList.isEmpty()) {
     		Task t = pickNextTask();
     		task_name = t.getName();
@@ -32,11 +31,22 @@ public class SJF extends CPU implements Algorithm {
     
     public Task pickNextTask() { //Will be called to pick the next task for execution based on the rules of SJF
     	Task shortest_job = taskList.get(0);
-    	for(Task each : taskList) {
-    		if(each.getBurst() < shortest_job.getBurst() && each.getArrivalTime() >= CPUTime) {
-					shortest_job = each;
+    	int flag = 0;
+		for(Task each : taskList) {
+    		if(each.getArrivalTime() >= CPUTime) {
+					flag++;
     		}
     	}
+		for(Task each : taskList) {
+			if(flag == taskList.size()) {
+				if(each.getBurst() < shortest_job.getBurst()) {
+					shortest_job = each;
+				}
+			}
+			else if(each.getBurst() < shortest_job.getBurst() && each.getArrivalTime() >= CPUTime && each.getArrivalTime() <= shortest_job.getArrivalTime()) {
+				shortest_job = each;
+			}
+	}
     	return shortest_job;
     }
 }

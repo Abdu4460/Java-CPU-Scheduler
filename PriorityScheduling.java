@@ -9,8 +9,7 @@ public class PriorityScheduling extends CPU implements Algorithm {
 		storeBurst(taskList);
     	Collections.sort(taskList, new Task());
 		
-    	System.out.println("<=====================================================>");
-    	System.out.println(" | Process |  Priority | CPU Burst |  Time Elapsed |");
+    	printTableHeader();
 		while(!taskList.isEmpty()) {
 			Task hp = pickNextTask();
 			task_name = hp.getName();

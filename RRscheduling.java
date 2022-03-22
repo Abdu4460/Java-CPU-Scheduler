@@ -5,12 +5,11 @@ public class RRscheduling extends CPU implements Algorithm {
 	public void schedule() {//the main scheduling algorithm, the initializations at the start here are for setting up necessary variables and stuff. 
     	int burst_time;
     	String task_name;
-    	System.out.println("<================================================================>");//For the output
-    	System.out.println(" | Process |  Priority | CPU Burst | Duration  |  Time Elapsed |");
 
 		storeBurst(taskList);
 		Collections.sort(taskList, new Task());
 
+		printTableHeader();
 		while(!taskList.isEmpty()) { // while loop that goes until the number of tasks in "processingNow" is 0
 			int displayQuantum; //i made this variable so that it can display any differences in the duration of running during execution...
 			Task RR = pickNextTask();//...for example, if a task has 3ms left, the output under "duration" will be 3 instead of 10...
