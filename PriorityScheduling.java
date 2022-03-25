@@ -1,39 +1,56 @@
-import java.util.Collections;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class PriorityScheduling extends CPU implements Algorithm {
 	
+	PriorityQueue<Task> wait = new PriorityQueue<Task>((a, b) -> { return b.getPriority() - a.getPriority(); });
+
 	public void schedule() {
     	int burst_time;
     	String task_name;
+		int task_arrival;
 
 		storeBurst(taskList);
-    	Collections.sort(taskList, new Task());
-		
+		queueSorting();
     	printTableHeader();
+
 		while(!taskList.isEmpty()) {
+			checkArrivals(taskList);
 			Task hp = pickNextTask();
+			if (hp == null) {
+				CPUTime++;
+				continue;
+			}
 			task_name = hp.getName();
     		burst_time = hp.getBurst();
-    		storeStart(task_name, CPUTime);
-			checkTime(hp);
+			task_arrival = hp.getArrivalTime();
+    		storeStart(task_name, CPUTime, task_arrival);
     		CPUTime = CPUTime + burst_time;
     		CPU.run(hp, CPUTime);
-    		storeCompletion(task_name, CPUTime);
+    		storeCompletion(task_name, CPUTime, task_arrival);
 			taskList.remove(hp);
 		}
+		System.out.println("<==========================================================================>");
 		printStats();
-		
 	}
 
-	@Override
-	public Task pickNextTask() { // Selects the next task to be scheduled to the CPU
-		Task highest_priority = taskList.get(0);
-		for(Task each: taskList) {
-			if(each.getPriority() > highest_priority.getPriority() && each.getArrivalTime() >= CPUTime) {
-					highest_priority = each;
+	public void checkArrivals(Queue<Task> taskList) {
+		for (Task t : taskList) {
+			if (t.getArrivalTime() <= CPUTime && !wait.contains(t)) {
+				wait.add(t);
 			}
 		}
-		return highest_priority;
 	}
 
+    public Task pickNextTask() { //Will be called to pick the next task for execution based on the rules of SJF
+		Task nextTask = null;
+
+		if (wait.isEmpty()) {
+			nextTask = null;
+		} else {
+			nextTask = wait.remove();
+		}
+
+		return nextTask;
+		}
 }

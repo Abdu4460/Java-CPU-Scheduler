@@ -79,7 +79,7 @@ public class Driver {
 			case "FCFS":
 				{
 					for(Task each: newList) {
-						o1.addToTaskList(each);
+						o1.taskList.add(each);
 					}
 					o1.schedule();
 				}
@@ -88,7 +88,7 @@ public class Driver {
 			case "SJF":
 				{
 					for(Task each: newList) {
-						o2.addToTaskList(each);
+						o2.taskList.add(each);
 					}
 					o2.schedule();
 				}
@@ -97,7 +97,7 @@ public class Driver {
 			case "PS":
 				{
 					for(Task each: newList) {
-						o3.addToTaskList(each);
+						o3.taskList.add(each);
 					}
 					o3.schedule();
 				}
@@ -105,7 +105,7 @@ public class Driver {
 			case "RR":
 				{
 					for(Task each: newList) {
-						o4.addToTaskList(each);
+						o4.taskList.add(each);
 					}
 					o4.schedule();
 				}

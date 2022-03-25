@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.*;
 /**
  * "Virtual" CPU that maintains system time and "runs" tasks.
@@ -165,8 +166,12 @@ import java.util.*;
     }
 
     public static void printStats() {
-        System.out.println("The average turnaround time is: " + avgTurnAroundTime());
-        System.out.println("The average waiting time is: " + avgWaitingTime());
-        System.out.println("The average response time is: " + avgResponseTime());
+        double att = avgTurnAroundTime();
+        double awt = avgWaitingTime();
+        double art = avgResponseTime();
+        DecimalFormat df = new DecimalFormat("#.###");
+        System.out.println("The average turnaround time is: " + df.format(att));
+        System.out.println("The average waiting time is: " + df.format(awt));
+        System.out.println("The average response time is: " + df.format(art));
     }
  }

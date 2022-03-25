@@ -1,52 +1,56 @@
-import java.util.Collections;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
-//Turnaround time = completion time - arrival time <-|We want the averages
-//Waiting time = turnaround time - burst time <------|of these three times
-//Response time = start time - arrival time <--------|for the executions
-//pull
 public class SJF extends CPU implements Algorithm {
     
+	PriorityQueue<Task> wait = new PriorityQueue<Task>((a, b) -> { return a.getBurst() - b.getBurst(); });
+
     public void schedule() { //"Runs" the task on the CPU and adds its finish information to the "completed" arraylist for calculating performance metrics
-    	int burst_time = 0;
+    	int burst_time;
     	String task_name;
-    	
+    	int task_arrival;
+
     	storeBurst(taskList);
-		Collections.sort(taskList, new Task());
-    	
+		queueSorting();
     	printTableHeader();
+
     	while(!taskList.isEmpty()) {
-    		Task t = pickNextTask();
-    		task_name = t.getName();
-    		burst_time = t.getBurst();
-    		storeStart(task_name, CPUTime);
-			checkTime(t);
-    		CPUTime = CPUTime + burst_time;
-    		CPU.run(t, CPUTime);
-    		Object[] finished_task = {task_name, CPUTime};
-    		completed.add(finished_task);
-    		taskList.remove(t);
+			checkArrivals(taskList);
+			Task t = pickNextTask();
+			if (t == null) {
+				CPUTime++;
+				continue;
+			}
+			task_name = t.getName();
+			burst_time = t.getBurst();
+			task_arrival = t.getArrivalTime();
+			storeStart(task_name, CPUTime, task_arrival);
+			CPUTime = CPUTime + burst_time;
+			CPU.run(t, CPUTime);
+			storeCompletion(task_name, CPUTime, task_arrival);
+			taskList.remove(t);
     	}
+		System.out.println("<==========================================================================>");
     	printStats();
     }
-    
-    public Task pickNextTask() { //Will be called to pick the next task for execution based on the rules of SJF
-    	Task shortest_job = taskList.get(0);
-    	int flag = 0;
-		for(Task each : taskList) {
-    		if(each.getArrivalTime() >= CPUTime) {
-					flag++;
-    		}
-    	}
-		for(Task each : taskList) {
-			if(flag == taskList.size()) {
-				if(each.getBurst() < shortest_job.getBurst()) {
-					shortest_job = each;
-				}
+
+	public void checkArrivals(Queue<Task> taskList) {
+		for (Task t : taskList) {
+			if (t.getArrivalTime() <= CPUTime && !wait.contains(t)) {
+				wait.add(t);
 			}
-			else if(each.getBurst() < shortest_job.getBurst() && each.getArrivalTime() >= CPUTime && each.getArrivalTime() <= shortest_job.getArrivalTime()) {
-				shortest_job = each;
-			}
+		}
 	}
-    	return shortest_job;
-    }
+
+    public Task pickNextTask() { //Will be called to pick the next task for execution based on the rules of SJF
+		Task nextTask = null;
+
+		if (wait.isEmpty()) {
+			nextTask = null;
+		} else {
+			nextTask = wait.remove();
+		}
+
+		return nextTask;
+		}
 }

@@ -12,4 +12,4 @@ The book we relied on is Operating Systems Concepts (10th Edition) by Silberscha
 2. CPU.java (heavily altered).
 3. Driver.java (heavily altered).
 
-The scheduler is terminal-based (we are working on a GUI for it) and it asks for however many tasks you want to be scheduled, asks for their info (Burst time, arrival time, and priority), and then asks for which algorithm would you prefer to use. The output is in the shape of the table and will be printed out on the console.
+The scheduler is terminal-based and it asks for however many tasks you want to be scheduled, asks for their info (Burst time, arrival time, and priority), and then asks for which algorithm would you prefer to use. The output is in the shape of the table and will be printed out on the console.

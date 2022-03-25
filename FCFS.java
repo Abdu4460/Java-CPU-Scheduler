@@ -2,7 +2,7 @@
 public class FCFS extends CPU implements Algorithm {
 	
 	public void schedule() { 
-    	int burst_time = 0;
+    	int burst_time;
     	String task_name;
     	int task_arrival;
 
@@ -19,7 +19,6 @@ public class FCFS extends CPU implements Algorithm {
     		CPUTime = CPUTime + burst_time;
     		CPU.run(t, CPUTime);
     		storeCompletion(task_name, CPUTime, task_arrival);
-			taskList.remove(t);
 		}
 		System.out.println("<==========================================================================>");
 		printStats();
