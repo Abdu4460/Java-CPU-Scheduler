@@ -12,7 +12,7 @@ public class SJF extends CPU implements Algorithm {
 
     	storeBurst(taskList);
 		queueSorting();
-    	printTableHeader();
+    	printTableHeader(true);
 
     	while(!taskList.isEmpty()) {
 			checkArrivals(taskList);
@@ -24,10 +24,10 @@ public class SJF extends CPU implements Algorithm {
 			task_name = t.getName();
 			burst_time = t.getBurst();
 			task_arrival = t.getArrivalTime();
-			storeStart(task_name, CPUTime, task_arrival);
+			storeStart(task_name, CPUTime, task_arrival);//To store start info for the task for performance calculations later
 			CPUTime = CPUTime + burst_time;
 			CPU.run(t, CPUTime);
-			storeCompletion(task_name, CPUTime, task_arrival);
+			storeCompletion(task_name, CPUTime, task_arrival);//To store completion info for the task for performance calculations later
 			taskList.remove(t);
     	}
 		System.out.println("<==========================================================================>");
@@ -35,6 +35,9 @@ public class SJF extends CPU implements Algorithm {
     }
 
 	public void checkArrivals(Queue<Task> taskList) {
+		/*
+		 * Method to add tasks to the wait queue which orders them per SJF rules
+		 */
 		for (Task t : taskList) {
 			if (t.getArrivalTime() <= CPUTime && !wait.contains(t)) {
 				wait.add(t);
@@ -42,7 +45,7 @@ public class SJF extends CPU implements Algorithm {
 		}
 	}
 
-    public Task pickNextTask() { //Will be called to pick the next task for execution based on the rules of SJF
+    public Task pickNextTask() {
 		Task nextTask = null;
 
 		if (wait.isEmpty()) {

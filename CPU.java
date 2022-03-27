@@ -11,6 +11,9 @@ import java.util.*;
  *  - CPU time elapsed
  *  - Duration (for Round-Robin scheduling as it is relevant there)
  * 
+ * This class also has a method to sort by arrival times since that is useful to any of the scheduling algorithms (subclasses of CPU)
+ * in addition to the performance metric methods used for calculations
+ * 
  * @author Greg Gagne - March 2016 (also edited by the contributors on the repository)
  */
  public class CPU
@@ -29,9 +32,14 @@ import java.util.*;
     /*
      * The following three methods are concerned with the output on the console.
      */
-    public static void printTableHeader() {
-        System.out.println("<==========================================================================>");
-    	System.out.format("%20s%18s%14s%16s\n", "Task name", "Priority level", "Burst time", "Time elapsed");
+    public static void printTableHeader(boolean flag) {
+        if (flag) {//True = table header for algorithms other than RR
+            System.out.println("<==========================================================================>");
+    	    System.out.format("%20s%18s%14s%16s\n", "Task name", "Priority level", "Burst time", "Time elapsed");
+        } else {//False = table header for RR algorithm
+            System.out.println("<==================================================================================>");
+    	    System.out.format("%10s%18s%18s%20s%16s\n", "Task name", "Priority level", "Remaining burst", "Quantum duration", "Time elapsed");
+        }
     }
 
     public static void run(Task task, int time_elapsed) {
@@ -39,12 +47,12 @@ import java.util.*;
     }
     
     public static void run(Task task, int Duration, int time_elapsed) { //overridden run method, only for RR beccause of the additional statistic
-        System.out.format("%16s%16d%16d%16d%16d\n", task.getName(), task.getPriority(), task.getBurst(), Duration, time_elapsed);
+        System.out.format("%8s%14d%16d%20d%20d\n", task.getName(), task.getPriority(), task.getBurst(), Duration, time_elapsed);
         
     }
 
     /*
-     * Method to pop everything from the taskList queue into the sorting list for it to be sorted and then pushed back into the queue
+     * Method to sort the queue by arrival times.
      */
     public static void queueSorting() {
         while(!taskList.isEmpty()) {
@@ -149,7 +157,7 @@ import java.util.*;
     }
 
     public static void storeStart(String task_name, int start_time, int arrival_time) {
-        Object[] newStart = {task_name,start_time, arrival_time};
+        Object[] newStart = {task_name, start_time, arrival_time};
         start.add(newStart);
     }
 
