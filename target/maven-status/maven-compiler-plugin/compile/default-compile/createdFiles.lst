@@ -1,1 +1,11 @@
+com/scheduler/cpuScheduler/scheduling/RRscheduling.class
+com/scheduler/cpuScheduler/scheduling/Algorithm.class
+com/scheduler/cpuScheduler/controllers/SubmitTasks.class
+com/scheduler/cpuScheduler/services/CPU.class
+com/scheduler/cpuScheduler/controllers/GetTasks.class
+com/scheduler/cpuScheduler/scheduling/FCFS.class
+com/scheduler/cpuScheduler/Driver.class
+com/scheduler/cpuScheduler/scheduling/SJF.class
 com/scheduler/cpuScheduler/CpuSchedulerApplication.class
+com/scheduler/cpuScheduler/scheduling/PriorityScheduling.class
+com/scheduler/cpuScheduler/models/Task.class

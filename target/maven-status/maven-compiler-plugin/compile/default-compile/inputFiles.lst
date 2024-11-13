@@ -1,1 +1,11 @@
 /home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/CpuSchedulerApplication.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/Driver.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/controllers/GetTasks.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/controllers/SubmitTasks.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/models/Task.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/scheduling/Algorithm.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/scheduling/FCFS.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/scheduling/PriorityScheduling.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/scheduling/RRscheduling.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/scheduling/SJF.java
+/home/abdu/Desktop/Projects/Java-CPU-Scheduler/src/main/java/com/scheduler/cpuScheduler/services/CPU.java

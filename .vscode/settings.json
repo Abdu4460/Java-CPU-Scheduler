@@ -6,5 +6,6 @@
         "exclude": [
             "lib/commons-jcs3-jcache-openjpa-3.1.jar"
         ]
-    }
+    },
+    "java.compile.nullAnalysis.mode": "automatic"
 }
