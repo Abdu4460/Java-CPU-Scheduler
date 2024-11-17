@@ -1,9 +1,15 @@
 package com.scheduler.cpu_scheduler.services;
 
-import java.text.DecimalFormat;
-import java.util.*;
-
 import com.scheduler.cpu_scheduler.models.Task;
+
+import java.util.Map;
+import java.util.List;
+import java.util.Queue;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Collections;
+
 /**
  * "Virtual" CPU that maintains system time and "runs" tasks.
  *
@@ -30,9 +36,16 @@ import com.scheduler.cpu_scheduler.models.Task;
     protected Queue<Task> taskList = new LinkedList<>();
     protected List<Task> sortingList = new ArrayList<>();
 	protected Map<String, Map<String, Object>> completed = new HashMap<>();
-	protected Map<String, Map<String, Object>> burst = new HashMap<>();
+	protected Map<String, Integer> burst = new HashMap<>();
 	protected Map<String, Map<String, Object>> start = new HashMap<>();
 
+    // Keys
+    String startTimeKey = "startTime";
+    String finishTimeKey = "finishTime";
+    String arrivalTimeKey = "arrivalTime";
+    String burstKey = "burst";
+    
+        
     public int getCpuTime() {
         return cpuTime;
     }
@@ -83,16 +96,16 @@ import com.scheduler.cpu_scheduler.models.Task;
 
     public double avgWaitingTime(){
         double twt = 0;
-        for(Map<String, Object> completedTask: completed.values()){
-            twt += waitingTime((String)completedTask.get("name"));
+        for(String taskName: completed.keySet()){
+            twt += waitingTime(taskName);
         }
         return (twt/completed.size());
     }
 
     public double avgTurnAroundTime(){
         double ttt = 0;
-        for(Map<String, Object> each: completed.values()){
-            ttt += turnAroundTime((String) each.get("name"));
+        for(String taskName: completed.keySet()){
+            ttt += turnAroundTime(taskName);
         }
         return (ttt/completed.size());
     }
@@ -100,78 +113,60 @@ import com.scheduler.cpu_scheduler.models.Task;
     public double avgResponseTime() {
         double trt = 0;
         
-        for(Map<String, Object> each: start.values()){
-            trt += responseTime((String) each.get("name"));
+        for(String taskName: start.keySet()){
+            trt += responseTime(taskName);
         }
         return (trt/completed.size());
     }
 
-    public double waitingTime(String id){
-        double turnaroundTime = turnAroundTime((String) completed.get(id).get("name"));
-        int burstTime = (int) burst.get(id).get("burst");
+    public double waitingTime(String taskName){
+        double turnaroundTime = turnAroundTime(taskName);
+        int burstTime = burst.get(taskName);
         
         return turnaroundTime - burstTime;
     }
 
-    public double turnAroundTime(String id){
-        int turnaround = 0;
-        
-        for(Map<String, Object> completedTask: completed){
-            String taskId = (String)completedTask.get("name");
-            if(taskId.equals(id)){
-                int finishTime = (int) completedTask.get("finishTime");
-                int arrivalTime = (int) completedTask.get("arrivalTime");
-                turnaround = finishTime - arrivalTime;
-                break;
-                }
-        }
-        return turnaround;
+    public double turnAroundTime(String taskName){
+        Map<String, Object> completedTask = completed.get(taskName);
+        int finishTime = (int) completedTask.get(finishTimeKey);
+        int arrivalTime = (int) completedTask.get(arrivalTimeKey);
+        return (double) finishTime - arrivalTime;
     }
 
-    public double responseTime(String taskName) {
-        double response = 0;
-        
-        for(Map<String, Object> each: start) {
-            String responseTask = (String) each.get("name");
-            if(responseTask.equals(taskName)) {
-                int startTime = (int) each.get("startTime");
-                int arrivalTime = (int) each.get("arrivalTime");
-                response = startTime - arrivalTime;
-                break;
-            }
-        }
-        
-        return response;
+    public double responseTime(String taskName) {        
+        Map<String, Object> taskInfo = start.get(taskName);
+        int startTime = (int) taskInfo.get(startTimeKey);
+        int arrivalTime = (int) taskInfo.get(arrivalTimeKey);
+        return (double) startTime - arrivalTime;        
     }
 
     public void storeStart(String taskName, int startTime, int arrivalTime) {
         Map<String, Object> newStart = new HashMap<>();
-        newStart.put("name", taskName);
-        newStart.put("startTime", startTime);
-        newStart.put("arrivalTime", arrivalTime);
-        start.add(newStart);
+        newStart.put(startTimeKey, startTime);
+        newStart.put(arrivalTimeKey, arrivalTime);
+        start.put(taskName, newStart);
     }
 
-    public void storeBurst() {
+    public void storeBurst(Queue<Task> taskList) {
         for(Task task : taskList) {
-            Map<String, Object> burstInfo = new HashMap<>();
-            burstInfo.put("name", task.getName());
-            burstInfo.put("burst", task.getBurst());
-            burst.add(burstInfo);
+            burst.put(task.getName(), task.getBurst());
         }
     }
 
     public void storeCompletion(String taskName, int finishTime, int arrivalTime) {
         Map<String, Object> finishedTask = new HashMap<>();
-        finishedTask.put("name", taskName);
-        finishedTask.put("finishTime", finishTime);
-        finishedTask.put("arrivalTime", arrivalTime);;
-        completed.add(finishedTask);
+        finishedTask.put(finishTimeKey, finishTime);
+        finishedTask.put(arrivalTimeKey, arrivalTime);
+        completed.put(taskName, finishedTask);
     }
 
-    public void printStats() {
-        double att = avgTurnAroundTime();
-        double awt = avgWaitingTime();
-        double art = avgResponseTime();
+    public Map<String, Double> printStats() {
+        // Returning the stats for display
+        Map<String, Double> statsMap = new HashMap<>();
+        statsMap.put("averageTurnaroundTime", avgTurnAroundTime());
+        statsMap.put("averageWaitingTime", avgWaitingTime());
+        statsMap.put("averageResponseTime", avgResponseTime());
+
+        return statsMap;
     }
  }

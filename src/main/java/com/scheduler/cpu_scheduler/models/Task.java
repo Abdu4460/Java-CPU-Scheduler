@@ -28,7 +28,7 @@ public class Task implements Comparator<Task>, Comparable<Task>
     private int tid;
     private int priority;
     private int burst;
-    private int ArrivalTime;
+    private int arrivalTime;
 
     /**
      * We use an atomic integer to assign each task a unique task id.
@@ -49,11 +49,11 @@ public class Task implements Comparator<Task>, Comparable<Task>
 
     }
 
-    public Task(String name, int priority, int burst, int ArrivalTime) {
+    public Task(String name, int priority, int burst, int arrivalTime) {
         this.name = name;
         this.priority = priority;
         this.burst = burst;
-        this.ArrivalTime = ArrivalTime;
+        this.arrivalTime = arrivalTime;
         this.tid = tidAllocator.getAndIncrement();
     }
 
@@ -77,7 +77,7 @@ public class Task implements Comparator<Task>, Comparable<Task>
     }
     
     public int getArrivalTime() {
-        return ArrivalTime;
+        return arrivalTime;
     }
 
     /**
@@ -95,10 +95,10 @@ public class Task implements Comparator<Task>, Comparable<Task>
         return burst;
     }
 
-    public int setArrivalTime(int ArrivalTime) {
-        this.ArrivalTime = ArrivalTime;
+    public int setArrivalTime(int arrivalTime) {
+        this.arrivalTime = arrivalTime;
         
-        return ArrivalTime;
+        return arrivalTime;
     }
 
     /**
@@ -126,6 +126,6 @@ public class Task implements Comparator<Task>, Comparable<Task>
             "Tid: " + tid + "\n" + 
             "Priority: " + priority + "\n" + 
             "Burst: " + burst + "\n" +
-            "Arrival time: " + ArrivalTime + "\n";
+            "Arrival time: " + arrivalTime + "\n";
     }
 }

@@ -5,17 +5,17 @@ import com.scheduler.cpu_scheduler.services.CPU;
 
 public class RRscheduling extends CPU implements Algorithm {
 
-	private static int RRQuantum; //Can be specified by the user in the Driver class
+	private int quantum; //Can be specified by the user in the Driver class
 
 	public void setQuantum(int quantumPeriod) {
-		RRQuantum = quantumPeriod;
+		this.quantum = quantumPeriod;
 	}
     
 	public void schedule() { 
     	//Initializing the necessary variables for scheduling.
-		int burst_time;
-    	String task_name;
-		int arrival_time;
+		int burstTime;
+    	String taskName;
+		int arrivalTime;
 		int fullList = taskList.size();
 
 		//Performs the necessary pre-scheduling methods for calculating performance, sorting the task list, and displaying output
@@ -24,40 +24,40 @@ public class RRscheduling extends CPU implements Algorithm {
 		
 		while(!taskList.isEmpty()) { 
 			int displayQuantum; 
-			Task RR = pickNextTask();
-			if (RR == null) {//To advance the CPU time in case no task arrived
-				cpuTime++;
+			Task roundRobinTask = pickNextTask();
+			if (roundRobinTask == null) {//To advance the CPU time in case no task arrived
+				getCpuTime();
 				continue;
 			}
-			task_name = RR.getName();
-			burst_time = RR.getBurst();
-			arrival_time = RR.getArrivalTime();
+			taskName = roundRobinTask.getName();
+			burstTime = roundRobinTask.getBurst();
+			arrivalTime = roundRobinTask.getArrivalTime();
 			
 			for(Object[] each: burst) {//To store start info for the task for performance calculations later
-				if (each[0].equals(task_name) && start.size() <= fullList) {
-					storeStart(task_name, cpuTime, arrival_time);
+				if (each[0].equals(taskName) && start.size() <= fullList) {
+					storeStart(taskName, cpuTime, arrivalTime);
 				}
 			}
 
-			if(burst_time > RRQuantum) {//this if-else-if is to find the next amount of burst to be subtracted
-    			displayQuantum = RRQuantum;//first block will subtract RRQuantum if the remaining burst > RRQuantum
-    			RR.setBurst(burst_time - RRQuantum);
-    			cpuTime = cpuTime + RRQuantum;
-    			taskList.add(RR);//pushes the task back into list for its next turn
+			if(burstTime > quantum) {//this if-else-if is to find the next amount of burst to be subtracted
+    			displayQuantum = quantum;//first block will subtract RRQuantum if the remaining burst > RRQuantum
+    			roundRobinTask.setBurst(burstTime - quantum);
+    			cpuTime = cpuTime + quantum;
+    			taskList.add(roundRobinTask);//pushes the task back into list for its next turn
     		}
-    		else if(burst_time == RRQuantum) {//this will subtract RRQuantum and mark the task as complete since remaining burst = RRQuantum
-    			displayQuantum = RRQuantum;
-    			RR.setBurst(burst_time - RRQuantum);
-    			cpuTime = cpuTime + RRQuantum;
-    			storeCompletion(task_name, cpuTime, arrival_time);//To store completion info for the task for performance calculations later
+    		else if(burstTime == quantum) {//this will subtract RRQuantum and mark the task as complete since remaining burst = RRQuantum
+    			displayQuantum = quantum;
+    			roundRobinTask.setBurst(burstTime - quantum);
+    			cpuTime = cpuTime + quantum;
+    			storeCompletion(taskName, cpuTime, arrivalTime);//To store completion info for the task for performance calculations later
     			}
     		else {
-    			displayQuantum = burst_time;
-    			RR.setBurst(burst_time - burst_time);//this will subtract the burst time if the remaining burst < RRQuantum
-    			cpuTime = cpuTime + burst_time;
-    			storeCompletion(task_name, cpuTime, arrival_time);//To store completion info for the task for performance calculations later
+    			displayQuantum = burstTime;
+    			roundRobinTask.setBurst(burstTime - burstTime);//this will subtract the burst time if the remaining burst < RRQuantum
+    			cpuTime = cpuTime + burstTime;
+    			storeCompletion(taskName, cpuTime, arrivalTime);//To store completion info for the task for performance calculations later
     			}
-			CPU.run(RR, displayQuantum, cpuTime);
+			CPU.run(roundRobinTask, displayQuantum, cpuTime);
 		}
 		System.out.println("<==================================================================================>");
 		printStats();
