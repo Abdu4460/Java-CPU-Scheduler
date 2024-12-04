@@ -1,8 +1,12 @@
 package com.scheduler.cpu_scheduler.scheduling;
 
+import org.springframework.stereotype.Component;
+
+import com.scheduler.cpu_scheduler.models.Algorithm;
 import com.scheduler.cpu_scheduler.models.Task;
 import com.scheduler.cpu_scheduler.services.CPU;
 
+@Component
 public class RRscheduling extends CPU implements Algorithm {
 
 	private int quantum; //Can be specified by the user in the Driver class
@@ -16,7 +20,7 @@ public class RRscheduling extends CPU implements Algorithm {
 		int burstTime;
     	String taskName;
 		int arrivalTime;
-		int fullList = taskList.size();
+		int fullListSize = taskList.size();
 
 		//Performs the necessary pre-scheduling methods for calculating performance, sorting the task list, and displaying output
 		storeBurst(taskList);
@@ -33,41 +37,38 @@ public class RRscheduling extends CPU implements Algorithm {
 			burstTime = roundRobinTask.getBurst();
 			arrivalTime = roundRobinTask.getArrivalTime();
 			
-			for(Object[] each: burst) {//To store start info for the task for performance calculations later
-				if (each[0].equals(taskName) && start.size() <= fullList) {
-					storeStart(taskName, cpuTime, arrivalTime);
-				}
-			}
+			//To store start info for the task for performance calculations later
+			if (start.size() <= fullListSize);
+			storeStart(taskName, getCpuTime(), arrivalTime);
 
 			if(burstTime > quantum) {//this if-else-if is to find the next amount of burst to be subtracted
     			displayQuantum = quantum;//first block will subtract RRQuantum if the remaining burst > RRQuantum
     			roundRobinTask.setBurst(burstTime - quantum);
-    			cpuTime = cpuTime + quantum;
+    			updateCpuTime(quantum);
     			taskList.add(roundRobinTask);//pushes the task back into list for its next turn
     		}
     		else if(burstTime == quantum) {//this will subtract RRQuantum and mark the task as complete since remaining burst = RRQuantum
     			displayQuantum = quantum;
     			roundRobinTask.setBurst(burstTime - quantum);
-    			cpuTime = cpuTime + quantum;
-    			storeCompletion(taskName, cpuTime, arrivalTime);//To store completion info for the task for performance calculations later
+				updateCpuTime(quantum);
+    			storeCompletion(taskName, getCpuTime(), arrivalTime);//To store completion info for the task for performance calculations later
     			}
     		else {
     			displayQuantum = burstTime;
     			roundRobinTask.setBurst(burstTime - burstTime);//this will subtract the burst time if the remaining burst < RRQuantum
-    			cpuTime = cpuTime + burstTime;
-    			storeCompletion(taskName, cpuTime, arrivalTime);//To store completion info for the task for performance calculations later
+    			updateCpuTime(burstTime);
+    			storeCompletion(taskName, getCpuTime(), arrivalTime);//To store completion info for the task for performance calculations later
     			}
-			CPU.run(roundRobinTask, displayQuantum, cpuTime);
+			run(roundRobinTask, displayQuantum, getCpuTime());
 		}
-		System.out.println("<==================================================================================>");
-		printStats();
+		storeStats();
 	}
 
 	public Task pickNextTask() {
 		Task nextTask;
 
 		//Round-Robin scheduling has similar rules to FCFS for the next task since it's basically FCFS but with rotating tasks
-		if (taskList.peek().getArrivalTime() <= cpuTime) {
+		if (taskList.peek().getArrivalTime() <= getCpuTime()) {
 			nextTask = taskList.remove();
 		} else {
 			nextTask = null;

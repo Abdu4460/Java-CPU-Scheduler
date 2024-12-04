@@ -5,6 +5,9 @@ import com.scheduler.cpu_scheduler.models.Task;
 import java.util.Map;
 import java.util.List;
 import java.util.Queue;
+
+import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,6 +29,7 @@ import java.util.Collections;
  * 
  * @author Greg Gagne - March 2016 (also edited by the contributors on the repository)
  */
+@Service
  public class CPU
  {
 	/*
@@ -38,13 +42,20 @@ import java.util.Collections;
 	protected Map<String, Map<String, Object>> completed = new HashMap<>();
 	protected Map<String, Integer> burst = new HashMap<>();
 	protected Map<String, Map<String, Object>> start = new HashMap<>();
+    protected Map<String, Map<String, Object>> runTasks = new HashMap<>();
 
     // Keys
     String startTimeKey = "startTime";
     String finishTimeKey = "finishTime";
     String arrivalTimeKey = "arrivalTime";
     String burstKey = "burst";
-    
+    String taskNameKey = "taskName";
+    String priorityKey = "priority";
+    String timeElapsedKey = "timeElapsed";
+    String durationKey = "duration";
+    String averageTurnaroundKey = "averageTurnaroundTime";
+    String averageWaitingKey = "averageWaitingTime";
+    String averageResponseKey = "averageResponseTime";
         
     public int getCpuTime() {
         return cpuTime;
@@ -63,12 +74,26 @@ import java.util.Collections;
     }
 
     public void run(Task task, int timeElapsed) {
-        System.out.format("%16s%16d%16d%16d\n", task.getName(), task.getPriority(), task.getBurst(), timeElapsed);
+        Map<String, Object> runningDetails = new HashMap<>();
+
+        runningDetails.put(taskNameKey, task.getName());
+        runningDetails.put(priorityKey, task.getPriority());
+        runningDetails.put(burstKey, task.getBurst());
+        runningDetails.put(timeElapsedKey, timeElapsed);
+
+        runTasks.put(arrivalTimeKey, runningDetails);
     }
     
     public void run(Task task, int duration, int timeElapsed) {
-        System.out.format("%8s%14d%16d%20d%20d\n", task.getName(), task.getPriority(), task.getBurst(), duration, timeElapsed);
+        Map<String, Object> runningDetails = new HashMap<>();
         
+        runningDetails.put(taskNameKey, task.getName());
+        runningDetails.put(priorityKey, task.getPriority());
+        runningDetails.put(burstKey, task.getBurst());
+        runningDetails.put(durationKey, duration);
+        runningDetails.put(timeElapsedKey, timeElapsed);
+
+        runTasks.put(arrivalTimeKey, runningDetails);
     }
 
     /*
@@ -160,12 +185,12 @@ import java.util.Collections;
         completed.put(taskName, finishedTask);
     }
 
-    public Map<String, Double> printStats() {
+    public Map<String, Double> storeStats() {
         // Returning the stats for display
         Map<String, Double> statsMap = new HashMap<>();
-        statsMap.put("averageTurnaroundTime", avgTurnAroundTime());
-        statsMap.put("averageWaitingTime", avgWaitingTime());
-        statsMap.put("averageResponseTime", avgResponseTime());
+        statsMap.put(averageTurnaroundKey, avgTurnAroundTime());
+        statsMap.put(averageWaitingKey, avgWaitingTime());
+        statsMap.put(averageResponseKey, avgResponseTime());
 
         return statsMap;
     }
