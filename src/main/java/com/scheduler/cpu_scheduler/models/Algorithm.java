@@ -1,6 +1,5 @@
-package com.scheduler.cpu_scheduler.scheduling;
+package com.scheduler.cpu_scheduler.models;
 
-import com.scheduler.cpu_scheduler.models.Task;
 /**
  * Interface representing a generic scheduling algorithm.
  *
