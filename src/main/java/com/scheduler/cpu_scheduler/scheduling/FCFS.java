@@ -1,8 +1,12 @@
 package com.scheduler.cpu_scheduler.scheduling;
 
+import org.springframework.stereotype.Component;
+
+import com.scheduler.cpu_scheduler.models.Algorithm;
 import com.scheduler.cpu_scheduler.models.Task;
 import com.scheduler.cpu_scheduler.services.CPU;
 
+@Component
 public class FCFS extends CPU implements Algorithm {
 	
 	public void schedule() { 
