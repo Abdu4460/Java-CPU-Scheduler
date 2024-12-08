@@ -10,7 +10,7 @@ import com.scheduler.cpu_scheduler.models.Algorithm;
 import com.scheduler.cpu_scheduler.models.Task;
 import com.scheduler.cpu_scheduler.services.CPU;
 
-@Component
+@Component("priorityScheduling")
 public class PriorityScheduling extends CPU implements Algorithm {
 	
 	//These initializations are for the two possible orders of priority (ascending/descending) and the choice is dependent on the user

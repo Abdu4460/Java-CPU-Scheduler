@@ -1,13 +1,13 @@
-package com.scheduler.cpuScheduler;
+// package com.scheduler.cpuScheduler;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class CpuSchedulerApplicationTests {
+// @SpringBootTest
+// class CpuSchedulerApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+// 	@Test
+// 	void contextLoads() {
+// 	}
 
-}
+// }

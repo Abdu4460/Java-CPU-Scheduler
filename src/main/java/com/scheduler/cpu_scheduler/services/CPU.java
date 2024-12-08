@@ -73,6 +73,14 @@ import java.util.Collections;
         this.cpuTime++;
     }
 
+    public void setTaskList(List<Task> tasklList) {
+        this.taskList.addAll(tasklList);
+    }
+
+    public Map<String, Map<String, Object>> getResultingTasks() {
+        return runTasks;
+    }
+
     public void run(Task task, int timeElapsed) {
         Map<String, Object> runningDetails = new HashMap<>();
 
@@ -81,10 +89,10 @@ import java.util.Collections;
         runningDetails.put(burstKey, task.getBurst());
         runningDetails.put(timeElapsedKey, timeElapsed);
 
-        runTasks.put(arrivalTimeKey, runningDetails);
+        runTasks.put(task.getName(), runningDetails);
     }
     
-    public void run(Task task, int duration, int timeElapsed) {
+    public void run(Task task, int duration, int timeElapsed, int run) {
         Map<String, Object> runningDetails = new HashMap<>();
         
         runningDetails.put(taskNameKey, task.getName());
@@ -93,7 +101,7 @@ import java.util.Collections;
         runningDetails.put(durationKey, duration);
         runningDetails.put(timeElapsedKey, timeElapsed);
 
-        runTasks.put(arrivalTimeKey, runningDetails);
+        runTasks.put(task.getName() + "-run" + run, runningDetails);
     }
 
     /*
