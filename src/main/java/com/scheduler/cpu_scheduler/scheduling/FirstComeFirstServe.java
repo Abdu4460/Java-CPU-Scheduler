@@ -29,6 +29,8 @@ public class FirstComeFirstServe extends CPU implements Algorithm {
     		run(t, getCpuTime());
     		storeCompletion(taskName, getCpuTime(), taskArrival);//To store completion info for the task for performance calculations later
 		}
+
+		storeStats();
 	}
 	
 

@@ -16,12 +16,12 @@ public class PriorityScheduling extends CPU implements Algorithm {
 	//These initializations are for the two possible orders of priority (ascending/descending) and the choice is dependent on the user
 	private PriorityQueue<Task> waitDescending = new PriorityQueue<>((a, b) -> { return b.getPriority() - a.getPriority(); });
 	private PriorityQueue<Task> waitAscending = new PriorityQueue<>((a, b) -> { return a.getPriority() - b.getPriority(); });
-	private boolean typeFlag;
 
-	public void setTypeFlag(boolean type) {
-		this.typeFlag = type;
+	private boolean priority;
+
+	public void setPriority(boolean priority) {
+		this.priority = priority;
 	}
-
 
 	public void schedule() {
     	//Initializing the necessary variables for scheduling.
@@ -34,7 +34,7 @@ public class PriorityScheduling extends CPU implements Algorithm {
 		queueSorting();
 
 		while(!taskList.isEmpty()) {
-			checkArrivals(taskList, typeFlag);
+			checkArrivals(taskList);
 			Task hp = pickNextTask();
 			if (hp == null) {//To advance the CPU time in case no task arrived
 				incrementCpuTime();;
@@ -49,13 +49,15 @@ public class PriorityScheduling extends CPU implements Algorithm {
     		storeCompletion(taskName, getCpuTime(), taskArrival);//To store completion info for the task for performance calculations later
 			taskList.remove(hp);
 		}
+
+		storeStats();
 	}
 
-	public void checkArrivals(Queue<Task> taskList, boolean type) {
+	public void checkArrivals(Queue<Task> taskList) {
 		/*
 		 * Method to add tasks to the wait queue which orders them per PS rules
 		 */
-		if (type) {//True = descending priority
+		if (priority) {//True = descending priority
 			for (Task t : taskList) {
 				if (t.getArrivalTime() <= getCpuTime() && !waitDescending.contains(t)) {
 					waitDescending.add(t);
@@ -73,7 +75,7 @@ public class PriorityScheduling extends CPU implements Algorithm {
     public Task pickNextTask() {
 		Task nextTask = null;
 
-		if (typeFlag) {//True = descending priority
+		if (priority) {//True = descending priority
 			if (waitDescending.isEmpty()) {
 				nextTask = null;
 			} else {

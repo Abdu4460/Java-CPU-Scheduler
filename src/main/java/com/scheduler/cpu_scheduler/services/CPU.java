@@ -42,7 +42,8 @@ import java.util.Collections;
 	protected Map<String, Map<String, Object>> completed = new HashMap<>();
 	protected Map<String, Integer> burst = new HashMap<>();
 	protected Map<String, Map<String, Object>> start = new HashMap<>();
-    protected Map<String, Map<String, Object>> runTasks = new HashMap<>();
+    protected List<Map<String, Object>> runTasks = new LinkedList<>();
+    protected Map<String, Double> statsMap = new HashMap<>();
 
     // Keys
     String startTimeKey = "startTime";
@@ -77,7 +78,7 @@ import java.util.Collections;
         this.taskList.addAll(tasklList);
     }
 
-    public Map<String, Map<String, Object>> getResultingTasks() {
+    public List<Map<String, Object>> getResultingTasks() {
         return runTasks;
     }
 
@@ -89,7 +90,7 @@ import java.util.Collections;
         runningDetails.put(burstKey, task.getBurst());
         runningDetails.put(timeElapsedKey, timeElapsed);
 
-        runTasks.put(task.getName(), runningDetails);
+        runTasks.add(runningDetails);
     }
     
     public void run(Task task, int duration, int timeElapsed, int run) {
@@ -101,7 +102,7 @@ import java.util.Collections;
         runningDetails.put(durationKey, duration);
         runningDetails.put(timeElapsedKey, timeElapsed);
 
-        runTasks.put(task.getName() + "-run" + run, runningDetails);
+        runTasks.add(runningDetails);
     }
 
     /*
@@ -193,13 +194,13 @@ import java.util.Collections;
         completed.put(taskName, finishedTask);
     }
 
-    public Map<String, Double> storeStats() {
-        // Returning the stats for display
-        Map<String, Double> statsMap = new HashMap<>();
+    public void storeStats() {
         statsMap.put(averageTurnaroundKey, avgTurnAroundTime());
         statsMap.put(averageWaitingKey, avgWaitingTime());
         statsMap.put(averageResponseKey, avgResponseTime());
+    }
 
+    public Map<String, Double> getStats() {
         return statsMap;
     }
  }

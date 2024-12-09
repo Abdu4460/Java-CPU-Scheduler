@@ -20,6 +20,10 @@ import com.scheduler.cpu_scheduler.scheduling.ShortestJobFirst;
 @RestController
 public class ApiController {
 
+    // Keys
+    private String resultsKey = "results";
+    private String statsKey = "statistics";
+
     private FirstComeFirstServe firstComeFirstServe;
     private PriorityScheduling priorityScheduling;
     private RoundRobinScheduling roundRobinScheduling;
@@ -36,32 +40,43 @@ public class ApiController {
     }
 
     @PostMapping("/submit-tasks")
-    public Map<String, Map<String, Object>> submitTasks(@RequestBody SubmitTasksRequest submitTasksRequest) {
+    public Map<String, Object> submitTasks(@RequestBody SubmitTasksRequest submitTasksRequest) {
         String algorithmName = submitTasksRequest.getAlgorithmName();
+        boolean priority = submitTasksRequest.isPriority();
         int quantum = submitTasksRequest.getQuantum();
         List<Task> taskList = submitTasksRequest.getTasks();
+        Map<String, Object> resultsMap = new HashMap<>();
 
         switch (algorithmName.toUpperCase(Locale.ROOT)) {
             case "FCFS":
                 firstComeFirstServe.setTaskList(taskList);
                 firstComeFirstServe.schedule();
-                return firstComeFirstServe.getResultingTasks();
+                resultsMap.put(resultsKey, firstComeFirstServe.getResultingTasks());
+                resultsMap.put(statsKey, firstComeFirstServe.getStats());
+                return resultsMap;
             
             case "PS":
                 priorityScheduling.setTaskList(taskList);
+                priorityScheduling.setPriority(priority);
                 priorityScheduling.schedule();
-                return priorityScheduling.getResultingTasks();
+                resultsMap.put(resultsKey, priorityScheduling.getResultingTasks());
+                resultsMap.put(statsKey, priorityScheduling.getStats());
+                return resultsMap;
                 
             case "RR":
                 roundRobinScheduling.setTaskList(taskList);
                 roundRobinScheduling.setQuantum(quantum);
                 roundRobinScheduling.schedule();
-                return roundRobinScheduling.getResultingTasks();
+                resultsMap.put(resultsKey, roundRobinScheduling.getResultingTasks());
+                resultsMap.put(statsKey, roundRobinScheduling.getStats());
+                return resultsMap;
             
             case "SJF":
                 shortestJobFirst.setTaskList(taskList);
                 shortestJobFirst.schedule();
-                return shortestJobFirst.getResultingTasks();
+                resultsMap.put(resultsKey, shortestJobFirst.getResultingTasks());
+                resultsMap.put(statsKey, shortestJobFirst.getStats());
+                return resultsMap;
         
             default:
                 return new HashMap<>();

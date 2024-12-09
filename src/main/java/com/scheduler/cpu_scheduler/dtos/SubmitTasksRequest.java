@@ -7,6 +7,7 @@ import com.scheduler.cpu_scheduler.models.Task;
 public class SubmitTasksRequest {
     
     private String algorithmName;
+    private boolean priority;
     private int quantum;
     private List<Task> tasks;
 
@@ -16,6 +17,14 @@ public class SubmitTasksRequest {
     
     public void setAlgorithmName(String algorithmName) {
         this.algorithmName = algorithmName;
+    }
+
+    public boolean isPriority() {
+        return priority;
+    }
+
+    public void setPriority(boolean priority) {
+        this.priority = priority;
     }
 
     public int getQuantum() {
