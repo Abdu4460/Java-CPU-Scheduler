@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,12 +40,17 @@ public class ApiController {
         this.shortestJobFirst = shortestJobFirst;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/submit-tasks")
     public Map<String, Object> submitTasks(@RequestBody SubmitTasksRequest submitTasksRequest) {
         String algorithmName = submitTasksRequest.getAlgorithmName();
+        System.out.println(algorithmName);
         boolean priority = submitTasksRequest.isPriority();
+        System.out.println(priority);
         int quantum = submitTasksRequest.getQuantum();
+        System.out.println(quantum);
         List<Task> taskList = submitTasksRequest.getTasks();
+        System.out.println(taskList);
         Map<String, Object> resultsMap = new HashMap<>();
 
         switch (algorithmName.toUpperCase(Locale.ROOT)) {
@@ -53,6 +59,7 @@ public class ApiController {
                 firstComeFirstServe.schedule();
                 resultsMap.put(resultsKey, firstComeFirstServe.getResultingTasks());
                 resultsMap.put(statsKey, firstComeFirstServe.getStats());
+                firstComeFirstServe.clearTaskList();
                 return resultsMap;
             
             case "PS":
@@ -61,6 +68,7 @@ public class ApiController {
                 priorityScheduling.schedule();
                 resultsMap.put(resultsKey, priorityScheduling.getResultingTasks());
                 resultsMap.put(statsKey, priorityScheduling.getStats());
+                priorityScheduling.clearTaskList();
                 return resultsMap;
                 
             case "RR":
@@ -69,6 +77,7 @@ public class ApiController {
                 roundRobinScheduling.schedule();
                 resultsMap.put(resultsKey, roundRobinScheduling.getResultingTasks());
                 resultsMap.put(statsKey, roundRobinScheduling.getStats());
+                roundRobinScheduling.clearTaskList();
                 return resultsMap;
             
             case "SJF":
@@ -76,6 +85,7 @@ public class ApiController {
                 shortestJobFirst.schedule();
                 resultsMap.put(resultsKey, shortestJobFirst.getResultingTasks());
                 resultsMap.put(statsKey, shortestJobFirst.getStats());
+                shortestJobFirst.clearTaskList();
                 return resultsMap;
         
             default:

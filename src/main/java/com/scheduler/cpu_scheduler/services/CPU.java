@@ -75,7 +75,14 @@ import java.util.Collections;
     }
 
     public void setTaskList(List<Task> tasklList) {
+        tasklList.forEach(task -> {
+            
+        });
         this.taskList.addAll(tasklList);
+    }
+
+    public void clearTaskList() {
+        this.taskList.clear();
     }
 
     public List<Map<String, Object>> getResultingTasks() {
