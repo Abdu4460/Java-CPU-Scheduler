@@ -19,6 +19,10 @@ package com.scheduler.cpu_scheduler.models;
  */
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.*;
 
 public class Task implements Comparator<Task>, Comparable<Task> 
@@ -45,17 +49,19 @@ public class Task implements Comparator<Task>, Comparable<Task>
         return (this.name).compareTo(t.name);
     }
 
-    public Task() {
-
-    }
-
-    public Task(String name, int priority, int burst, int arrivalTime) {
+    @JsonCreator  // Tell Jackson to use this constructor
+    public Task(@JsonProperty("name") String name,
+                @JsonProperty("priority") int priority,
+                @JsonProperty("burst") int burst,
+                @JsonProperty("arrivalTime") int arrivalTime) {
         this.name = name;
         this.priority = priority;
         this.burst = burst;
         this.arrivalTime = arrivalTime;
         this.tid = tidAllocator.getAndIncrement();
     }
+
+    public Task() { }
 
     /**
      * Appropriate getters

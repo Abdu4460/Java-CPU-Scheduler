@@ -18,7 +18,7 @@ public class ShortestJobFirst extends CPU implements Algorithm {
     	String taskName;
     	int taskArrival;
 
-    	storeBurst(taskList);
+    	storeBurst();
 		queueSorting();
 
     	while(!taskList.isEmpty()) {

@@ -5,6 +5,6 @@ com/scheduler/cpu_scheduler/services/CPU.class
 com/scheduler/cpu_scheduler/scheduling/FirstComeFirstServe.class
 com/scheduler/cpu_scheduler/scheduling/RoundRobinScheduling.class
 com/scheduler/cpu_scheduler/models/Algorithm.class
-com/scheduler/cpu_scheduler/dtos/SubmitTasksRequest.class
 com/scheduler/cpu_scheduler/CpuSchedulerApplication.class
+com/scheduler/cpu_scheduler/dtos/SubmitTasksRequest.class
 com/scheduler/cpu_scheduler/scheduling/PriorityScheduling.class

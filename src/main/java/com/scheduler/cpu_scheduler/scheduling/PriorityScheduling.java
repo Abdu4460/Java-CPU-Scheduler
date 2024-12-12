@@ -30,7 +30,7 @@ public class PriorityScheduling extends CPU implements Algorithm {
 		int taskArrival;
 
 		//Performs the necessary pre-scheduling methods for calculating performance, sorting the task list, and displaying output
-		storeBurst(taskList);
+		storeBurst();
 		queueSorting();
 
 		while(!taskList.isEmpty()) {

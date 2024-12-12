@@ -75,9 +75,6 @@ import java.util.Collections;
     }
 
     public void setTaskList(List<Task> tasklList) {
-        tasklList.forEach(task -> {
-            
-        });
         this.taskList.addAll(tasklList);
     }
 
@@ -188,7 +185,7 @@ import java.util.Collections;
         start.put(taskName, newStart);
     }
 
-    public void storeBurst(Queue<Task> taskList) {
+    public void storeBurst() {
         for(Task task : taskList) {
             burst.put(task.getName(), task.getBurst());
         }
