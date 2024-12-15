@@ -47,6 +47,7 @@ import java.util.Collections;
 
     // Keys
     String startTimeKey = "startTime";
+    String remainingTimeKey = "remainingTime";
     String finishTimeKey = "finishTime";
     String arrivalTimeKey = "arrivalTime";
     String burstKey = "burst";
@@ -75,29 +76,39 @@ import java.util.Collections;
     }
 
     public void setTaskList(List<Task> tasklList) {
-        this.taskList.addAll(tasklList);
+        this.taskList = new LinkedList<>(tasklList);
     }
 
-    public void clearTaskList() {
+    public void resetParameters() {
+        setCpuTime(0);
         this.taskList.clear();
+        this.sortingList.clear();
+        this.completed.clear();
+        this.burst.clear();
+        this.start.clear();
+        this.runTasks.clear();
     }
 
     public List<Map<String, Object>> getResultingTasks() {
         return runTasks;
     }
 
-    public void run(Task task, int timeElapsed) {
+    public void run(Task task, int timeElapsed, int startTime, int remainingTime, int finishTime) {
         Map<String, Object> runningDetails = new HashMap<>();
 
         runningDetails.put(taskNameKey, task.getName());
         runningDetails.put(priorityKey, task.getPriority());
         runningDetails.put(burstKey, task.getBurst());
+        runningDetails.put(arrivalTimeKey, task.getArrivalTime());
+        runningDetails.put(startTimeKey, startTime);
+        runningDetails.put(remainingTimeKey, remainingTime);
+        runningDetails.put(finishTimeKey, finishTime);
         runningDetails.put(timeElapsedKey, timeElapsed);
 
         runTasks.add(runningDetails);
     }
     
-    public void run(Task task, int duration, int timeElapsed, int run) {
+    public void run(Task task, int duration, int timeElapsed) {
         Map<String, Object> runningDetails = new HashMap<>();
         
         runningDetails.put(taskNameKey, task.getName());

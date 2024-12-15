@@ -1,9 +1,11 @@
 package com.scheduler.cpu_scheduler.controllers;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,49 +45,70 @@ public class ApiController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/submit-tasks")
     public Map<String, Object> submitTasks(@RequestBody SubmitTasksRequest submitTasksRequest) {
+        // Request body
         String algorithmName = submitTasksRequest.getAlgorithmName();
-        System.out.println(algorithmName);
         boolean priority = submitTasksRequest.isPriority();
-        System.out.println(priority);
         int quantum = submitTasksRequest.getQuantum();
-        System.out.println(quantum);
         List<Task> taskList = submitTasksRequest.getTasks();
-        System.out.println(taskList);
+
+        // Mapping results
+        List<Map<String, Object>> resultingTasks = new LinkedList<>();
+        Map<String, Double> stats = new HashMap<>();
         Map<String, Object> resultsMap = new HashMap<>();
 
         switch (algorithmName.toUpperCase(Locale.ROOT)) {
             case "FCFS":
                 firstComeFirstServe.setTaskList(taskList);
                 firstComeFirstServe.schedule();
-                resultsMap.put(resultsKey, firstComeFirstServe.getResultingTasks());
-                resultsMap.put(statsKey, firstComeFirstServe.getStats());
-                firstComeFirstServe.clearTaskList();
+                resultingTasks = firstComeFirstServe.getResultingTasks()
+                       .stream()
+                       .map(task -> new HashMap<>(task)) // Copy results if needed
+                       .collect(Collectors.toList());
+                stats = firstComeFirstServe.getStats();
+                resultsMap.put(resultsKey, resultingTasks);
+                resultsMap.put(statsKey, stats);
+                firstComeFirstServe.resetParameters();
                 return resultsMap;
             
             case "PS":
                 priorityScheduling.setTaskList(taskList);
                 priorityScheduling.setPriority(priority);
                 priorityScheduling.schedule();
-                resultsMap.put(resultsKey, priorityScheduling.getResultingTasks());
-                resultsMap.put(statsKey, priorityScheduling.getStats());
-                priorityScheduling.clearTaskList();
+                resultingTasks = priorityScheduling.getResultingTasks()
+                       .stream()
+                       .map(task -> new HashMap<>(task)) // Copy results if needed
+                       .collect(Collectors.toList());
+                stats = priorityScheduling.getStats();
+                resultsMap.put(resultsKey, resultingTasks);
+                resultsMap.put(statsKey, stats);
+                priorityScheduling.resetParameters();
                 return resultsMap;
                 
             case "RR":
                 roundRobinScheduling.setTaskList(taskList);
                 roundRobinScheduling.setQuantum(quantum);
                 roundRobinScheduling.schedule();
-                resultsMap.put(resultsKey, roundRobinScheduling.getResultingTasks());
-                resultsMap.put(statsKey, roundRobinScheduling.getStats());
-                roundRobinScheduling.clearTaskList();
+                resultingTasks = roundRobinScheduling.getResultingTasks()
+                       .stream()
+                       .map(task -> new HashMap<>(task)) // Copy results if needed
+                       .collect(Collectors.toList());
+                stats = roundRobinScheduling.getStats();
+                resultsMap.put(resultsKey, resultingTasks);
+                resultsMap.put(statsKey, stats);
+                roundRobinScheduling.resetParameters();
                 return resultsMap;
             
             case "SJF":
                 shortestJobFirst.setTaskList(taskList);
                 shortestJobFirst.schedule();
-                resultsMap.put(resultsKey, shortestJobFirst.getResultingTasks());
-                resultsMap.put(statsKey, shortestJobFirst.getStats());
-                shortestJobFirst.clearTaskList();
+                resultingTasks = shortestJobFirst.getResultingTasks()
+                       .stream()
+                       .map(task -> new HashMap<>(task)) // Copy results if needed
+                       .collect(Collectors.toList());
+                stats = shortestJobFirst.getStats();
+                resultsMap.put(resultsKey, resultingTasks);
+                resultsMap.put(statsKey, stats);
+                shortestJobFirst.resetParameters();
                 return resultsMap;
         
             default:

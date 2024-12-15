@@ -21,7 +21,6 @@ public class RoundRobinScheduling extends CPU implements Algorithm {
     	String taskName;
 		int arrivalTime;
 		int fullListSize = taskList.size();
-		int run = 0;
 
 		//Performs the necessary pre-scheduling methods for calculating performance, sorting the task list, and displaying output
 		storeBurst();
@@ -60,8 +59,7 @@ public class RoundRobinScheduling extends CPU implements Algorithm {
     			updateCpuTime(burstTime);
     			storeCompletion(taskName, getCpuTime(), arrivalTime);//To store completion info for the task for performance calculations later
     			}
-			run(roundRobinTask, displayQuantum, getCpuTime(), run);
-			run++;
+			run(roundRobinTask, displayQuantum, getCpuTime());
 		}
 		storeStats();
 	}

@@ -24,10 +24,12 @@ public class FirstComeFirstServe extends CPU implements Algorithm {
     		taskName = t.getName();
     		burstTime = t.getBurst();
 			taskArrival = t.getArrivalTime();
-    		storeStart(taskName, getCpuTime(), taskArrival);//To store start info for the task for performance calculations later
+			int startTime = getCpuTime();
+    		storeStart(taskName, startTime, taskArrival);//To store start info for the task for performance calculations later
     		updateCpuTime(burstTime);
-    		run(t, getCpuTime());
-    		storeCompletion(taskName, getCpuTime(), taskArrival);//To store completion info for the task for performance calculations later
+			int endTime = getCpuTime();
+    		run(t, endTime);
+    		storeCompletion(taskName, endTime, taskArrival);//To store completion info for the task for performance calculations later
 		}
 
 		storeStats();
