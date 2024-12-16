@@ -20,16 +20,17 @@ public class FirstComeFirstServe extends CPU implements Algorithm {
 		queueSorting();
 
 		while(!taskList.isEmpty()) {
-			Task t = pickNextTask();
-    		taskName = t.getName();
-    		burstTime = t.getBurst();
-			taskArrival = t.getArrivalTime();
+			Task task = pickNextTask();
+    		taskName = task.getName();
+    		burstTime = task.getBurst();
+			taskArrival = task.getArrivalTime();
 			int startTime = getCpuTime();
     		storeStart(taskName, startTime, taskArrival);//To store start info for the task for performance calculations later
     		updateCpuTime(burstTime);
-			int endTime = getCpuTime();
-    		run(t, endTime);
-    		storeCompletion(taskName, endTime, taskArrival);//To store completion info for the task for performance calculations later
+			int finishTime = getCpuTime();
+			// Hard-coded remaining time because in this case the task will run fully before releasing resources
+    		run(task, finishTime, startTime, 0, burstTime, finishTime);
+    		storeCompletion(taskName, finishTime, taskArrival);//To store completion info for the task for performance calculations later
 		}
 
 		storeStats();

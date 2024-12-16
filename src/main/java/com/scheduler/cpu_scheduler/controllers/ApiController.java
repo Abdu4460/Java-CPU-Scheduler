@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scheduler.cpu_scheduler.dtos.RunDetailsResponse;
 import com.scheduler.cpu_scheduler.dtos.SubmitTasksRequest;
 import com.scheduler.cpu_scheduler.models.Task;
 import com.scheduler.cpu_scheduler.scheduling.FirstComeFirstServe;
@@ -52,7 +53,7 @@ public class ApiController {
         List<Task> taskList = submitTasksRequest.getTasks();
 
         // Mapping results
-        List<Map<String, Object>> resultingTasks = new LinkedList<>();
+        List<RunDetailsResponse> resultingTasks = new LinkedList<>();
         Map<String, Double> stats = new HashMap<>();
         Map<String, Object> resultsMap = new HashMap<>();
 
@@ -62,7 +63,7 @@ public class ApiController {
                 firstComeFirstServe.schedule();
                 resultingTasks = firstComeFirstServe.getResultingTasks()
                        .stream()
-                       .map(task -> new HashMap<>(task)) // Copy results if needed
+                       .map(RunDetailsResponse::cloneFrom)
                        .collect(Collectors.toList());
                 stats = firstComeFirstServe.getStats();
                 resultsMap.put(resultsKey, resultingTasks);
@@ -75,9 +76,9 @@ public class ApiController {
                 priorityScheduling.setPriority(priority);
                 priorityScheduling.schedule();
                 resultingTasks = priorityScheduling.getResultingTasks()
-                       .stream()
-                       .map(task -> new HashMap<>(task)) // Copy results if needed
-                       .collect(Collectors.toList());
+                        .stream()
+                        .map(RunDetailsResponse::cloneFrom)
+                        .collect(Collectors.toList());
                 stats = priorityScheduling.getStats();
                 resultsMap.put(resultsKey, resultingTasks);
                 resultsMap.put(statsKey, stats);
@@ -89,9 +90,9 @@ public class ApiController {
                 roundRobinScheduling.setQuantum(quantum);
                 roundRobinScheduling.schedule();
                 resultingTasks = roundRobinScheduling.getResultingTasks()
-                       .stream()
-                       .map(task -> new HashMap<>(task)) // Copy results if needed
-                       .collect(Collectors.toList());
+                        .stream()
+                        .map(RunDetailsResponse::cloneFrom)
+                        .collect(Collectors.toList());
                 stats = roundRobinScheduling.getStats();
                 resultsMap.put(resultsKey, resultingTasks);
                 resultsMap.put(statsKey, stats);
@@ -102,9 +103,9 @@ public class ApiController {
                 shortestJobFirst.setTaskList(taskList);
                 shortestJobFirst.schedule();
                 resultingTasks = shortestJobFirst.getResultingTasks()
-                       .stream()
-                       .map(task -> new HashMap<>(task)) // Copy results if needed
-                       .collect(Collectors.toList());
+                        .stream()
+                        .map(RunDetailsResponse::cloneFrom)
+                        .collect(Collectors.toList());
                 stats = shortestJobFirst.getStats();
                 resultsMap.put(resultsKey, resultingTasks);
                 resultsMap.put(statsKey, stats);

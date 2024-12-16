@@ -1,0 +1,119 @@
+# Compiled class files
+target/
+build/
+out/
+*.class
+
+# Maven dependencies
+.mvn/
+!**/mvnw
+!**/mvnw.cmd
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Gradle files
+.gradle/
+build/
+!gradle-wrapper.jar
+!gradlew
+!gradlew.bat
+
+# IDE-specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+*.sw?
+.vscode/
+*.log
+
+# Mac system files
+.DS_Store
+
+# IntelliJ IDEA
+*.ipr
+*.iws
+.idea/
+
+# Eclipse
+.project
+.classpath
+.settings/
+.metadata/
+
+# STS (Spring Tool Suite)
+.springBeans
+*.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VSCode
+.vscode/
+launch.json
+settings.json
+tasks.json
+
+# Log files
+*.log
+logs/
+spring.log
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+*.old
+*.orig
+*~
+
+# Test outputs
+test-output/
+surefire-reports/
+failsafe-reports/
+
+# H2 database files
+*.db
+*.mv.db
+*.h2.db
+*.trace.db
+
+# Generated files
+*.jar
+*.war
+*.ear
+
+# Lombok-generated annotations
+*.lombok
+
+# Node / Front-end
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+*.env
+
+# Spring Boot devtools
+.restart
+.rebuild

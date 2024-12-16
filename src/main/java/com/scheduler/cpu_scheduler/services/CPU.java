@@ -1,5 +1,6 @@
 package com.scheduler.cpu_scheduler.services;
 
+import com.scheduler.cpu_scheduler.dtos.RunDetailsResponse;
 import com.scheduler.cpu_scheduler.models.Task;
 
 import java.util.Map;
@@ -42,12 +43,11 @@ import java.util.Collections;
 	protected Map<String, Map<String, Object>> completed = new HashMap<>();
 	protected Map<String, Integer> burst = new HashMap<>();
 	protected Map<String, Map<String, Object>> start = new HashMap<>();
-    protected List<Map<String, Object>> runTasks = new LinkedList<>();
+    protected List<RunDetailsResponse> runTasks = new LinkedList<>();
     protected Map<String, Double> statsMap = new HashMap<>();
 
     // Keys
     String startTimeKey = "startTime";
-    String remainingTimeKey = "remainingTime";
     String finishTimeKey = "finishTime";
     String arrivalTimeKey = "arrivalTime";
     String burstKey = "burst";
@@ -89,35 +89,24 @@ import java.util.Collections;
         this.runTasks.clear();
     }
 
-    public List<Map<String, Object>> getResultingTasks() {
+    public List<RunDetailsResponse> getResultingTasks() {
         return runTasks;
     }
 
-    public void run(Task task, int timeElapsed, int startTime, int remainingTime, int finishTime) {
-        Map<String, Object> runningDetails = new HashMap<>();
+    public void run(Task task, int timeElapsed, int startTime, int remainingTime, int durationRun, int finishTime) {
+        RunDetailsResponse runDetailsResponse = new RunDetailsResponse();
 
-        runningDetails.put(taskNameKey, task.getName());
-        runningDetails.put(priorityKey, task.getPriority());
-        runningDetails.put(burstKey, task.getBurst());
-        runningDetails.put(arrivalTimeKey, task.getArrivalTime());
-        runningDetails.put(startTimeKey, startTime);
-        runningDetails.put(remainingTimeKey, remainingTime);
-        runningDetails.put(finishTimeKey, finishTime);
-        runningDetails.put(timeElapsedKey, timeElapsed);
+        runDetailsResponse.setTaskName(task.getName());
+        runDetailsResponse.setPriority(task.getPriority());
+        runDetailsResponse.setBurst(task.getBurst());
+        runDetailsResponse.setArrivalTime(task.getArrivalTime());
+        runDetailsResponse.setStartTime(startTime);
+        runDetailsResponse.setRemainingTime(remainingTime);
+        runDetailsResponse.setDurationRun(durationRun);
+        runDetailsResponse.setFinishTime(finishTime);
+        runDetailsResponse.setCpuTime(timeElapsed);
 
-        runTasks.add(runningDetails);
-    }
-    
-    public void run(Task task, int duration, int timeElapsed) {
-        Map<String, Object> runningDetails = new HashMap<>();
-        
-        runningDetails.put(taskNameKey, task.getName());
-        runningDetails.put(priorityKey, task.getPriority());
-        runningDetails.put(burstKey, task.getBurst());
-        runningDetails.put(durationKey, duration);
-        runningDetails.put(timeElapsedKey, timeElapsed);
-
-        runTasks.add(runningDetails);
+        runTasks.add(runDetailsResponse);
     }
 
     /*

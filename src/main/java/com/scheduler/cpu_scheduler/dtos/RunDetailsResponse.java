@@ -11,6 +11,21 @@ public class RunDetailsResponse {
     private int finishTime;
     private int cpuTime;
 
+    public static RunDetailsResponse cloneFrom(RunDetailsResponse original) {
+        RunDetailsResponse clone = new RunDetailsResponse();
+        clone.setTaskName(original.getTaskName());
+        clone.setPriority(original.getPriority());
+        clone.setBurst(original.getBurst());
+        clone.setArrivalTime(original.getArrivalTime());
+        clone.setStartTime(original.getStartTime());
+        clone.setRemainingTime(original.getRemainingTime());
+        clone.setDurationRun(original.getDurationRun());
+        clone.setFinishTime(original.getFinishTime());
+        clone.setCpuTime(original.getCpuTime());
+        return clone;
+    }
+    
+
     public String getTaskName() {
         return taskName;
     }

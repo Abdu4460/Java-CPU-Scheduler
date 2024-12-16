@@ -35,19 +35,22 @@ public class PriorityScheduling extends CPU implements Algorithm {
 
 		while(!taskList.isEmpty()) {
 			checkArrivals(taskList);
-			Task hp = pickNextTask();
-			if (hp == null) {//To advance the CPU time in case no task arrived
+			Task task = pickNextTask();
+			if (task == null) {//To advance the CPU time in case no task arrived
 				incrementCpuTime();;
 				continue;
 			}
-			taskName = hp.getName();
-    		burstTime = hp.getBurst();
-			taskArrival = hp.getArrivalTime();
+			taskName = task.getName();
+    		burstTime = task.getBurst();
+			taskArrival = task.getArrivalTime();
+			int startTime = getCpuTime();
     		storeStart(taskName, getCpuTime(), taskArrival);//To store start info for the task for performance calculations later
     		updateCpuTime(burstTime);
-    		run(hp, getCpuTime());
+			int finishTime = getCpuTime();
+			// Hard-coded remaining time because in this case the task will run fully before releasing resources
+    		run(task, finishTime, startTime, 0, burstTime, finishTime);
     		storeCompletion(taskName, getCpuTime(), taskArrival);//To store completion info for the task for performance calculations later
-			taskList.remove(hp);
+			taskList.remove(task);
 		}
 
 		storeStats();
