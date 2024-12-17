@@ -8,7 +8,7 @@ public class RunDetailsResponse {
     private int startTime;
     private int remainingTime;
     private int durationRun;
-    private int finishTime;
+    private Integer finishTime;
     private int cpuTime;
 
     public static RunDetailsResponse cloneFrom(RunDetailsResponse original) {
@@ -82,11 +82,11 @@ public class RunDetailsResponse {
         this.durationRun = durationRun;
     }
 
-    public int getFinishTime() {
+    public Integer getFinishTime() {
         return finishTime;
     }
 
-    public void setFinishTime(int finishTime) {
+    public void setFinishTime(Integer finishTime) {
         this.finishTime = finishTime;
     }
 

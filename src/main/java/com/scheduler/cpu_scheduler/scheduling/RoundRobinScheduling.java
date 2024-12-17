@@ -41,8 +41,8 @@ public class RoundRobinScheduling extends CPU implements Algorithm {
 			int remainingTime = 0;
 
 			// To store start info for the task for performance calculations later
-			if (start.size() <= fullListSize)
-				storeStart(taskName, getCpuTime(), arrivalTime);
+			if (start.size() <= fullListSize && start.get(taskName) == null)
+				storeStart(taskName, startTime, arrivalTime);
 
 			if (burstTime > quantum) {// this if-else-if is to find the next amount of burst to be subtracted
 				displayQuantum = quantum;// first block will subtract RRQuantum if the remaining burst > RRQuantum
@@ -68,7 +68,7 @@ public class RoundRobinScheduling extends CPU implements Algorithm {
 																		// performance calculations later
 			}
 			int finishTime = getCpuTime();
-			run(task, finishTime, startTime, remainingTime, displayQuantum, finishTime);
+			run(task, finishTime, remainingTime, displayQuantum, finishTime);
 		}
 		storeStats();
 	}

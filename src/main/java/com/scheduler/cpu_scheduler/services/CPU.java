@@ -93,17 +93,17 @@ import java.util.Collections;
         return runTasks;
     }
 
-    public void run(Task task, int timeElapsed, int startTime, int remainingTime, int durationRun, int finishTime) {
+    public void run(Task task, int timeElapsed, int remainingTime, int durationRun, int finishTime) {
         RunDetailsResponse runDetailsResponse = new RunDetailsResponse();
 
         runDetailsResponse.setTaskName(task.getName());
         runDetailsResponse.setPriority(task.getPriority());
         runDetailsResponse.setBurst(task.getBurst());
         runDetailsResponse.setArrivalTime(task.getArrivalTime());
-        runDetailsResponse.setStartTime(startTime);
+        runDetailsResponse.setStartTime((int) start.get(task.getName()).get(startTimeKey));
         runDetailsResponse.setRemainingTime(remainingTime);
         runDetailsResponse.setDurationRun(durationRun);
-        runDetailsResponse.setFinishTime(finishTime);
+        runDetailsResponse.setFinishTime(remainingTime > 0 ? null : finishTime);
         runDetailsResponse.setCpuTime(timeElapsed);
 
         runTasks.add(runDetailsResponse);

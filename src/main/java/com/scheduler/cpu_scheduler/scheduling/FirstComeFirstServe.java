@@ -29,7 +29,7 @@ public class FirstComeFirstServe extends CPU implements Algorithm {
     		updateCpuTime(burstTime);
 			int finishTime = getCpuTime();
 			// Hard-coded remaining time because in this case the task will run fully before releasing resources
-    		run(task, finishTime, startTime, 0, burstTime, finishTime);
+    		run(task, finishTime, 0, burstTime, finishTime);
     		storeCompletion(taskName, finishTime, taskArrival);//To store completion info for the task for performance calculations later
 		}
 

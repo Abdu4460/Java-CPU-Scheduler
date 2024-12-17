@@ -32,10 +32,10 @@ public class ShortestJobFirst extends CPU implements Algorithm {
 			burstTime = task.getBurst();
 			taskArrival = task.getArrivalTime();
 			int startTime = getCpuTime();
-			storeStart(taskName, getCpuTime(), taskArrival);//To store start info for the task for performance calculations later
+			storeStart(taskName, startTime, taskArrival);//To store start info for the task for performance calculations later
 			updateCpuTime(burstTime);
 			int finishTime = getCpuTime();
-			run(task, finishTime, startTime, 0, burstTime, finishTime);
+			run(task, finishTime, 0, burstTime, finishTime);
 			storeCompletion(taskName, getCpuTime(), taskArrival);//To store completion info for the task for performance calculations later
 			taskList.remove(task);
     	}
