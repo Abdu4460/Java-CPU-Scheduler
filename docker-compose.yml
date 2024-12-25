@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./Back-end
+      dockerfile: Dockerfile
+    container_name: cpu-scheduler-backend
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./Front-end
+      dockerfile: Dockerfile
+    container_name: cpu-scheduler-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
