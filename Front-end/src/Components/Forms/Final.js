@@ -46,7 +46,6 @@ const Final = ({ values }) => {
       );
       setResponseData(response.data);
       console.log("API Response:", response.data);
-      alert("Data submitted successfully!");
     } catch (error) {
       console.error("Error sending data to API:", error);
       alert("Failed to submit data.");
@@ -61,15 +60,15 @@ const Final = ({ values }) => {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden">
-      <div className="relative w-[150%] -ml-[25%]">
     <Box
       mt={10}
       sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        mx: "auto",
+        position: "relative",
+        left: "50%", 
+        transform: "translateX(-50%)", 
         width: "150%",
         maxWidth: "1200px",
         px: 2,
@@ -162,8 +161,6 @@ const Final = ({ values }) => {
         </CardContent>
       </Card>
     </Box>
-    </div>
-    </div>
   );
 };
 

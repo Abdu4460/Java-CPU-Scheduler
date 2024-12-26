@@ -12,7 +12,7 @@ const validationSchema = Yup.object({
 const StepOne = ({ nextStep }) => {
   return (
     <Box mt={10} display="flex" justifyContent="center">
-      <Card variant="outlined" sx={{ maxWidth: 500, p: 3 }}>
+      <Card variant="outlined" sx={{ maxWidth: 500, p: 3, boxShadow: 3, }}>
         <Typography variant="h5" mb={2}>
           CPU Task Scheduling Simulator
         </Typography>

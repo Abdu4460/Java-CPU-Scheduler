@@ -70,7 +70,7 @@ const StepTwo = ({ nextStep, handleFormData, prevStep, values }) => {
 
   return (
     <Box mt={10} display="flex" justifyContent="center">
-      <Card variant="outlined" sx={{ maxWidth: 500, p: 3 }}>
+      <Card variant="outlined" sx={{ maxWidth: 500, p: 3, boxShadow: 3, }}>
         <Typography variant="h5" mb={2}>
           Enter Task Details
         </Typography>
